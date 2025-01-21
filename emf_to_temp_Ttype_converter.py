@@ -1,3 +1,4 @@
+from tkinter import *
 import numpy as np
 
 x_data = np.array([-6.258, -6.232, -6.180, -6.105, -6.007, -5.888, -5.753, -5.603, -5.439, -5.261,
@@ -15,21 +16,37 @@ y_data = np.array([-270, -260, -250, -240, -230, -220, -210, -200, -190, -180,
                    180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 
                    290, 300, 310, 320, 330, 340, 350, 360, 370, 380, 390, 400])
 
-emfValue = float(input("Enter the Emf value: "))
-
-if(emfValue < 0):
-    deg = 7
-else:
-    deg = 10
-
-
-mymodel = np.poly1d(np.polyfit(x_data, y_data, deg))
-
-Temperature_value = round(mymodel(emfValue),3)
-
-print(f"Temperature of the given EMF value for T type thermocouple is {Temperature_value} ")
+def getTemp():
+    emfValue = float(EMF_label_value.get())
+    if(emfValue < 0):
+        deg = 7
+    else:
+        deg = 10
+    mymodel = np.poly1d(np.polyfit(x_data, y_data, deg))
+    Temperature_value = round(mymodel(emfValue),3)
+    result_label.config(text=f"Temperature of the given EMF value for T type thermocouple is {Temperature_value}")
 
 
+
+root = Tk()
+root.title("EMF To Temperature Converter")
+
+root.geometry("600x200")
+
+test = Label(root,text="EMF To Temperature Convertor ",font=("default",15))
+test.grid(row=2,column=2,columnspan=12)
+
+EMF_label = Label(root,text="EMF (mV): ")
+EMF_label_value = Entry(root)
+EMF_label.grid(row=5,column=1,pady=20,padx=2)
+EMF_label_value.grid(row=5,column=2,pady=20,padx=2)
+Submit_button = Button(root,text="Submit",command=getTemp)
+Submit_button.grid(row=5,column=3,pady=20,padx=2)
+
+result_label = Label(root)
+result_label.grid(row=7,column=2,columnspan=12 )
+
+root.mainloop()
 
 
 
